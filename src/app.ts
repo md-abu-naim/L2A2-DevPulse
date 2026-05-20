@@ -1,5 +1,9 @@
-import express, { type Request, type Response } from 'express'
-const app = express()
+import express, { type Application, type Request, type Response } from 'express'
+import { authRouter } from './modules/auth/auth.router'
+const app: Application = express()
+
+
+app.use(express.json())
 
 app.get('/api/', (req: Request, res: Response) => {
   res.status(200).json({
@@ -8,5 +12,7 @@ app.get('/api/', (req: Request, res: Response) => {
     "Date": '20-05-2026'
   })
 })
+
+app.use('/api/auth', authRouter)
 
 export default app
