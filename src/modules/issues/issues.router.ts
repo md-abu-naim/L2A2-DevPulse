@@ -5,9 +5,11 @@ import auth from "../../middleware/auth.js";
 
 const router = Router() 
 
-router.post('/issues', auth, issuesController.createIssues)
+router.post('/', auth, issuesController.createIssues)
 
 // /api/issues?sort=oldest&type=feature_request&status=in_progress
-router.get('/issues', auth, issuesController.getAllIssues)
+router.get('/', auth, issuesController.getAllIssues)
+
+router.get('/:id', auth, issuesController.getSingleIssue)
 
 export const issuesRouter = router 

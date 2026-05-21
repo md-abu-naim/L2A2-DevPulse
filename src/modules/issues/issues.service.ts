@@ -34,12 +34,11 @@ const getAllIssuesFromDB = async (query: any) => {
         sql += ` WHERE ${conditions.join(' AND ')}`
     }
 
-    sql += sort === "oldest" ? ` ORDER BY created_at ASC`: ` ORDER BY created_at DESC`
+    sql += sort === "oldest" ? ` ORDER BY created_at ASC` : ` ORDER BY created_at DESC`
 
     const issuesResult = await pool.query(sql, values)
 
     const issues = issuesResult.rows
-    console.log('issues', issues);
 
     const user = await pool.query(`
         SELECT id, name, role FROM users
@@ -55,7 +54,7 @@ const getAllIssuesFromDB = async (query: any) => {
         status: issue.status,
 
         reporter: reporters.find(user => user.id === issue.reporter_id),
-        
+
         created_at: issue.created_at,
         updated_at: issue.updated_at
     }))
@@ -63,6 +62,40 @@ const getAllIssuesFromDB = async (query: any) => {
     return result
 }
 
+const getSingleIssueFromDB = async (id: string) => {
+    const issueResult = await pool.query(`
+        SELECT * FROM issues WHERE id=$1
+        `, [id])
+
+    if (issueResult.rows.length === 0) {
+        throw new Error('Issue not found')
+    }
+
+    const issue = issueResult.rows[0]
+
+    const user = await pool.query(`
+        SELECT id, name, role FROM users
+        `)
+
+    const reporters = user.rows
+
+    const result = {
+        id: issue.id,
+        title: issue.title,
+        description: issue.description,
+        type: issue.type,
+        status: issue.status,
+
+        reporter: reporters.find(user => user.id === issue.reporter_id),
+
+        created_at: issue.created_at,
+        updated_at: issue.updated_at
+    }
+
+    return result
+}
+
 export const issuesService = {
-    createIssuesIntoDB, getAllIssuesFromDB
+    createIssuesIntoDB, getAllIssuesFromDB,
+    getSingleIssueFromDB
 }
