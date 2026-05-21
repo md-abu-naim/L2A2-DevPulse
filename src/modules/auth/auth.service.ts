@@ -1,5 +1,5 @@
-import config from "../../config"
-import { pool } from "../../db"
+import config from "../../config/index.js"
+import { pool } from "../../db/index.js"
 import type { IUser } from "./auth.interface.js"
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken'
