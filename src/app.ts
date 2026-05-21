@@ -1,5 +1,6 @@
 import express, { type Application, type Request, type Response } from 'express'
 import { authRouter } from './modules/auth/auth.router.js'
+import { issuesRouter } from './modules/issues/issues.router.js'
 const app: Application = express()
 
 
@@ -14,5 +15,7 @@ app.get('/api/', (req: Request, res: Response) => {
 })
 
 app.use('/api/auth', authRouter)
+
+app.use('/api', issuesRouter)
 
 export default app
