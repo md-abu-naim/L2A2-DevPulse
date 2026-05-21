@@ -5,7 +5,7 @@ import { issuesService } from "./issues.service.js";
 const createIssues = async (req: Request, res: Response) => {
     try {
         const reporter_id = (req as any).user.id
-        
+
         const result = await issuesService.createIssuesIntoDB({ ...req.body, reporter_id })
 
         res.status(201).json({
@@ -24,6 +24,27 @@ const createIssues = async (req: Request, res: Response) => {
 }
 
 
+const getAllIssues = async(req: Request, res: Response) => {
+    try {
+
+        const result = await issuesService.getAllIssuesFromDB(req.query)
+
+        res.status(200).json({
+            success: true,
+            message: 'Retrieve all issues successfully',
+            data: result
+        })
+        
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            error: error
+        })
+    }
+}
+
+
 export const issuesController = {
-    createIssues
+    createIssues, getAllIssues
 }
