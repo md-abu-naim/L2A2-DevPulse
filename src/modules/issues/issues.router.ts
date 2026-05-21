@@ -7,9 +7,11 @@ const router = Router()
 
 router.post('/', auth, issuesController.createIssues)
 
-// /api/issues?sort=oldest&type=feature_request&status=in_progress
-router.get('/', auth, issuesController.getAllIssues)
+// /api/issues?sort=oldest&type=bug&status=in_progress
+router.get('/', issuesController.getAllIssues)
 
-router.get('/:id', auth, issuesController.getSingleIssue)
+router.get('/:id', issuesController.getSingleIssue)
+
+router.put('/:id', issuesController.updateIssues)
 
 export const issuesRouter = router 

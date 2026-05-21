@@ -95,7 +95,26 @@ const getSingleIssueFromDB = async (id: string) => {
     return result
 }
 
+const updateIssueIntoDB = async(payload: Issues, id: string) => {
+    const {title, description, type, status} = payload
+    console.log(id);
+
+    const result = await pool.query(`
+        UPDATE issues SET 
+        title=COALESCE($1, title),
+        description=COALESCE($2, description),
+        type=COALESCE($3, type),
+        status=COALESCE($, status)
+
+        WHERE id=$5 RETURNING *
+        `, [title, description, type, status, id])
+
+    console.log(result);
+
+    return result
+}
+
 export const issuesService = {
     createIssuesIntoDB, getAllIssuesFromDB,
-    getSingleIssueFromDB
+    getSingleIssueFromDB, updateIssueIntoDB
 }
