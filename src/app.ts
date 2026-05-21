@@ -1,5 +1,5 @@
 import express, { type Application, type Request, type Response } from 'express'
-import { authRouter } from './modules/auth/auth.router'
+import { authRouter } from './modules/auth/auth.router.js'
 const app: Application = express()
 
 
