@@ -23,7 +23,6 @@ const createUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
     try {
         const result = await authService.loginUserIntoDB(req.body)
-        console.log(result);
 
         res.status(200).json({
             success: true,
