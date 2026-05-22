@@ -12,6 +12,8 @@ router.get('/', issuesController.getAllIssues)
 
 router.get('/:id', issuesController.getSingleIssue)
 
-router.put('/:id', issuesController.updateIssues)
+router.put('/:id', auth, issuesController.updateIssues)
+
+router.delete('/:id', auth, issuesController.deleteIssue)
 
 export const issuesRouter = router 

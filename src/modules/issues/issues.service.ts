@@ -1,3 +1,4 @@
+import type { JwtPayload } from "jsonwebtoken"
 import { pool } from "../../db/index.js"
 import type { Issues } from "./issues.interface.js"
 
@@ -95,8 +96,8 @@ const getSingleIssueFromDB = async (id: string) => {
     return result
 }
 
-const updateIssueIntoDB = async(payload: Issues, id: string) => {
-    const {title, description, type, status} = payload
+const updateIssueIntoDB = async (payload: Issues, id: string) => {
+    const { title, description, type, status } = payload
 
     const result = await pool.query(`
         UPDATE issues SET 
@@ -111,7 +112,20 @@ const updateIssueIntoDB = async(payload: Issues, id: string) => {
     return result.rows[0]
 }
 
+const deleteIssueFromDB = async (id: string, user: JwtPayload) => {
+    if (user?.role !== 'maintainer') {
+        throw new Error('Only maintainer can delete issues')
+    }
+    
+    const result = await pool.query(`
+        DELETE FROM issues WHERE id=$1
+        `, [id])
+
+    return result.rows[0]
+}
+
 export const issuesService = {
     createIssuesIntoDB, getAllIssuesFromDB,
-    getSingleIssueFromDB, updateIssueIntoDB
+    getSingleIssueFromDB, updateIssueIntoDB,
+    deleteIssueFromDB
 }

@@ -70,7 +70,7 @@ const getSingleIssue = async (req: Request, res: Response) => {
 
 const updateIssues = async (req: Request, res: Response) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
 
         const result = await issuesService.updateIssueIntoDB(req.body, id as string)
 
@@ -89,8 +89,31 @@ const updateIssues = async (req: Request, res: Response) => {
     }
 }
 
+const deleteIssue = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+
+        const user = req.user!
+
+        const result = await issuesService.deleteIssueFromDB(id as string, user)
+
+        res.status(200).json({
+            success: true,
+            message: 'Issue deleted successfully',
+            data: result
+        })
+
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            error: error
+        })
+    }
+}
+
 
 export const issuesController = {
     createIssues, getAllIssues, getSingleIssue,
-    updateIssues
+    updateIssues, deleteIssue
 }
