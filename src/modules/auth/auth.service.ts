@@ -15,7 +15,7 @@ const createUserIntoDB = async (payload: IUser) => {
 
     delete result.rows[0].password
 
-    return result
+    return result.rows[0]
 }
 
 
@@ -33,7 +33,6 @@ const loginUserIntoDB = async (payload: IUser) => {
     const user = userData.rows[0]
 
     const matchedPassword = await bcrypt.compare(password as string, user.password)
-    console.log(matchedPassword);
 
     if (!matchedPassword) {
         throw new Error('Invalid Credentials')
