@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import config from "../config/index.js";
-import { pool } from "../db/index.js";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -15,7 +14,6 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
         }
 
         const decoded = jwt.verify(token as string, config.jwt_secret as string) as JwtPayload
-
 
         req.user = decoded
 
