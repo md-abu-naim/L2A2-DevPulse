@@ -71,11 +71,8 @@ const getSingleIssue = async (req: Request, res: Response) => {
 const updateIssues = async (req: Request, res: Response) => {
     try {
         const {id} = req.params
-        const reporter_id = (req as any).user.id
 
-        console.log('object', id);
-
-        const result = await issuesService.updateIssueIntoDB({ ...req.body, reporter_id }, id as string)
+        const result = await issuesService.updateIssueIntoDB(req.body, id as string)
 
         res.status(200).json({
             success: true,
